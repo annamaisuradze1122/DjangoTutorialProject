@@ -1,0 +1,80 @@
+{%extends 'main.html' %}
+{% load static %}
+{% block content %}
+
+<body>
+    <div class="auth">
+      <div class="card">
+        <div class="auth__header text-center">
+          <a href="/">
+            <img src=" {% static 'images/icon.svg' %}" alt="icon" />
+          </a>
+          <h3>Account SignUp</h3>
+          <p>Create a new developer account</p>
+        </div>
+
+        {% if page == 'register' %}
+            <form action = "{% url 'register' %}" method = "POST" class="form auth__form">
+                {% csrf_token %}
+                {% for field in form %}
+                    <!-- Input:Text -->
+                    <div class="form__field">
+                        <label for="formInput#text"> {{field.label}}</label>
+                        <!-- fields -->
+                        {{field}}
+                        <!-- field help text -->
+                        <!-- {% if field.help_text %}
+                            {{field.help_text}}
+                        {% endif %} -->
+                        <!-- field error text -->
+                        {% for error in field.errors %}
+                           <p style="color: red;">
+                            {{error}}
+                           </p> 
+                        {% endfor %}
+
+                    </div>
+                {% endfor %}
+                <input type="submit" value="Register User" class="btn btn--sub btn--lg"/>
+            </form>
+            <div class="auth__alternative">
+            <p>Already have an Account?</p>
+            <a href="{% url 'login' %}">Log In</a>
+            </div>
+            </div>
+        {% else %}
+            <form action="{% url 'login' %}" method="POST"> 
+                {% csrf_token %}
+                <!-- Input:Username -->
+                <div class="form__field">
+                    <label for="formInput#text">Username: </label>
+                    <input
+                      class="input input--text"
+                      id="formInput#text"
+                      type="text"
+                      name="username"
+                      placeholder="Enter your username..."
+                    />
+                </div>
+                <!-- Input:Password -->
+                <div class="form__field">
+                    <label for="formInput#password">Password: </label>
+                    <input
+                    class="input input--password"
+                    id="formInput#passowrd"
+                    type="password"
+                    name="password"
+                    placeholder="Enter your password..."
+                    />
+                </div>
+                <input type="submit" value="LogIn" class="btn btn--sub btn--lg"/>
+            </form>
+            <div class="auth__alternative">
+                <p>Don't Have An Account?</p>
+                <a href="{% url 'register' %}"> Sign Up </a>
+                </div>
+        {% endif %}
+    </div>
+  </body>
+
+{% endblock content %}
